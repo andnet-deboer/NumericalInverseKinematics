@@ -1,0 +1,70 @@
+name: Lint and Test
+
+on: [push, pull_request]
+
+# Define the ROS version as a variable for the whole workflow
+env:
+  ROS_DISTRO: kilted
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    # Run the job inside a Docker container that already has ROS installed
+    container:
+      image: ros:kilted-ros-base
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Setup Python
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Cache the pip venv directory
+      - name: Cache pip venv
+        id: cache-pip
+        uses: actions/cache@v4
+        with:
+          path: venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install dependencies
+      - name: Install dependencies
+        # Add shell: bash here
+        shell: bash
+        run: |
+          # The ROS container automatically sources ROS, so rosdep is on the PATH.
+          # Update rosdep sources first
+          rosdep update
+
+          # Now install project's specific ROS dependencies
+          rosdep install --from-paths src --ignore-src -r -y
+
+          # Install Python-specific packages
+          python -m venv venv
+          source venv/bin/activate # 'source' now works because we specified bash
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Run lint checks
+      - name: Run lint and format checks with Ruff
+        # Add shell: bash here
+        shell: bash
+        run: |
+          # The ROS env is already sourced by the container.
+          # We only need to activate our venv.
+          source venv/bin/activate
+          ruff format src --check
+          ruff check src
+
+      # Run tests
+      - name: Run tests
+        # Add shell: bash here
+        shell: bash
+        run: |
+          source venv/bin/activate
+          pytest

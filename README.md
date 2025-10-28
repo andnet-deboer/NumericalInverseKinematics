@@ -1,0 +1,112 @@
+# Getting Started with This Python Project Template
+
+> Note: This file is for local setup instructions only. You can rename it and add it to `.gitignore` or delete it from your project entirely.
+
+---
+
+## Project Structure
+
+* `src/` – Your Python source code.
+* `setup_env.sh` – Script to create a virtual environment and install default/dev dependencies.
+* `Makefile` – Simplifies common tasks like setting up the environment and cleaning.
+* `.vscode/settings.json` – VS Code configuration for auto-formatting with Ruff.
+* `requirements.txt` – Tracks installed Python packages.
+* `.gitignore` – Files and folders ignored by git (e.g., `venv/`, `.vscode/`).
+
+---
+
+## Steps
+1. Clone the repository:
+
+```bash
+git clone git@github.com:andnet-deboer/PythonBoilerPlate.git
+cd PythonBoilerPlate
+```
+
+
+2. Setting Up the Project
+
+### Bootstrapping Environment
+
+Use the Makefile to simplify environment setup:
+
+```bash
+make setup
+```
+
+This command will:
+
+* Create a virtual environment (`venv`) if it does not exist.
+* Install default Python packages (numpy, pandas, matplotlib, etc.).
+* Install development tools (Ruff, flake8, isort, mypy, pytest, pre-commit).
+* Optionally install extras (AI frameworks, ROS) if specified:
+
+```bash
+make setup ai--tensorflow
+make setup ai--pytorch
+make setup ros
+```
+You can **combine** multiple arguments like ```make setup ros ai--tensorflow```
+
+After running, activate the environment:
+
+```bash
+. venv/bin/activate
+```
+
+### Cleaning the Environment
+
+```bash
+make clean
+```
+
+Removes the virtual environment.
+
+---
+
+## Using VS Code
+
+1. Open the project folder in VS Code.
+2. Install the Ruff extension: [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
+3. The project is preconfigured via `.vscode/settings.json` to:
+
+   * Format code on save
+   * Organize imports
+   * Use Ruff as the default Python formatter
+4. Ensure VS Code uses the correct Python interpreter (`venv`).
+
+---
+
+## Running Tests and Linting
+
+* Run tests:
+
+```bash
+pytest
+```
+
+* Check linting and formatting:
+
+```bash
+ruff check src/
+ruff format src/  # auto-format code
+```
+
+---
+
+## Adding New Dependencies
+
+After installing new packages, update `requirements.txt`:
+
+```bash
+pip freeze --local > requirements.txt
+```
+
+---
+
+This setup provides a consistent development environment and clear workflow for new contributors.
+
+### License
+Copyright &copy; 2025 Andnet DeBoer
+
+This project is licensed under the terms of the MIT License.
