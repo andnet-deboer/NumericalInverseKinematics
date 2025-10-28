@@ -1,112 +1,141 @@
-# Getting Started with This Python Project Template
+# Numerical Inverse Kinematics
 
-> Note: This file is for local setup instructions only. You can rename it and add it to `.gitignore` or delete it from your project entirely.
-
----
-
-## Project Structure
-
-* `src/` – Your Python source code.
-* `setup_env.sh` – Script to create a virtual environment and install default/dev dependencies.
-* `Makefile` – Simplifies common tasks like setting up the environment and cleaning.
-* `.vscode/settings.json` – VS Code configuration for auto-formatting with Ruff.
-* `requirements.txt` – Tracks installed Python packages.
-* `.gitignore` – Files and folders ignored by git (e.g., `venv/`, `.vscode/`).
+This project implements **numerical inverse kinematics (IK)** for a 6-DOF UR5 robot using the **Newton–Raphson method**.  
+It builds upon the `IKinBody` function from the *Modern Robotics* library and extends it to produce iteration reports, CSV outputs, and visualizations.
 
 ---
 
-## Steps
-1. Clone the repository:
+## Overview
 
-```bash
-git clone git@github.com:andnet-deboer/PythonBoilerPlate.git
-cd PythonBoilerPlate
+The main function, `IKinBodyIterates`, computes the joint configuration that achieves a desired end-effector pose `Tsd` by iteratively minimizing the body twist error.  
+Each iteration prints the following information:
+
+- **Iteration number**
+- **Joint vector θᵢ**
+- **End-effector transformation Tsb(θᵢ)**
+- **Error twist Vᵦ**
+- **Angular error ∥ωᵦ∥**
+- **Linear error ∥vᵦ∥**
+
+The function also stores each iteration’s joint values in a matrix and exports them as a `.csv` file for visualization.
+
+---
+
+## Features
+
+- Implements **Newton–Raphson inverse kinematics** using the body Jacobian.  
+- Reports detailed per-iteration values.  
+- Supports multiple initial guesses to analyze convergence.  
+- Exports results to `.csv` files (`short_iterates.csv` and `long_iterates.csv`).  
+- Generates plots of:
+  - End-effector position trajectory in 3D.
+  - Linear error magnitude vs. iteration count.
+  - Angular error magnitude vs. iteration count.
+
+---
+
+## Repository Structure
+
+```
+NumericalInverseKinematics/
+├── src/                 # Source code implementation
+├── tests/               # Unit tests
+├── Makefile             # Simplified automation for setup and cleanup
+├── setup_env.sh         # Creates virtual environment and installs dependencies
+├── requirements.txt     # Python dependencies
+├── README.md            # Project documentation (this file)
+└── data/
+    ├── short_iterates.csv
+    └── long_iterates.csv
 ```
 
+---
 
-2. Setting Up the Project
+## Installation
 
-### Bootstrapping Environment
-
-Use the Makefile to simplify environment setup:
+Clone the repository and set up a virtual environment:
 
 ```bash
+git clone https://github.com/andnet-deboer/NumericalInverseKinematics.git
+cd NumericalInverseKinematics
 make setup
 ```
 
-This command will:
-
-* Create a virtual environment (`venv`) if it does not exist.
-* Install default Python packages (numpy, pandas, matplotlib, etc.).
-* Install development tools (Ruff, flake8, isort, mypy, pytest, pre-commit).
-* Optionally install extras (AI frameworks, ROS) if specified:
+Then activate your virtual environment:
 
 ```bash
-make setup ai--tensorflow
-make setup ai--pytorch
-make setup ros
-```
-You can **combine** multiple arguments like ```make setup ros ai--tensorflow```
-
-After running, activate the environment:
-
-```bash
-. venv/bin/activate
-```
-
-### Cleaning the Environment
-
-```bash
-make clean
-```
-
-Removes the virtual environment.
-
----
-
-## Using VS Code
-
-1. Open the project folder in VS Code.
-2. Install the Ruff extension: [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
-3. The project is preconfigured via `.vscode/settings.json` to:
-
-   * Format code on save
-   * Organize imports
-   * Use Ruff as the default Python formatter
-4. Ensure VS Code uses the correct Python interpreter (`venv`).
-
----
-
-## Running Tests and Linting
-
-* Run tests:
-
-```bash
-pytest
-```
-
-* Check linting and formatting:
-
-```bash
-ruff check src/
-ruff format src/  # auto-format code
+source venv/bin/activate
 ```
 
 ---
 
-## Adding New Dependencies
+## Usage
 
-After installing new packages, update `requirements.txt`:
+Run the inverse kinematics solver with your desired target configuration:
 
 ```bash
-pip freeze --local > requirements.txt
+python src/ikinbody_iterates.py
+```
+
+Example output (truncated):
+
+```
+Iteration 3:
+joint vector: 0.221, 0.375, 2.233, 1.414
+SE(3) end-effector config:
+1.000 0.000 0.000 3.275
+0.000 1.000 0.000 4.162
+0.000 0.000 1.000 -5.732
+error twist V_b: (0.232, 0.171, 0.211, 0.345, 1.367, -0.222)
+angular error ||omega_b||: 0.357
+linear error ||v_b||: 1.427
+```
+
+The function will generate `.csv` files in the project directory that log each iteration's joint angles.
+
+---
+
+## Visualization
+
+You can visualize the results in **CoppeliaSim** using the provided UR5 animation scene.  
+Each `.csv` file can be loaded to animate the Newton–Raphson process for:
+- **Short iterates (2–4 steps to convergence)**
+- **Long iterates (10+ steps or divergence)**
+
+---
+
+## Requirements
+
+- Python ≥ 3.8  
+- `numpy`, `scipy`, `matplotlib`, `modern_robotics`  
+Install all dependencies using:
+
+```bash
+pip install -r requirements.txt
 ```
 
 ---
 
-This setup provides a consistent development environment and clear workflow for new contributors.
+## Results
 
-### License
-Copyright &copy; 2025 Andnet DeBoer
+The following plots are generated automatically:
 
-This project is licensed under the terms of the MIT License.
+1. **3D trajectory of the end-effector**
+2. **Linear error vs. iteration count**
+3. **Angular error vs. iteration count**
+
+These help compare convergence behaviors for different initial guesses.
+
+---
+
+## References
+
+- Lynch, K.M. & Park, F.C., *Modern Robotics: Mechanics, Planning, and Control*, 2017.  
+- Northwestern University ME 449: *Robotics and Automation, Assignment 3 (2025).*
+
+---
+
+## License
+
+This project is released under the **MIT License**.  
+See the [LICENSE](LICENSE) file for details.
