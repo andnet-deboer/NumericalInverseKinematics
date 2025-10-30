@@ -1,7 +1,6 @@
 # Numerical Inverse Kinematics
 
-This project implements **numerical inverse kinematics (IK)** for a 6-DOF UR5 robot using the **Newton–Raphson method**.  
-It builds upon the `IKinBody` function from the *Modern Robotics* library and extends it to produce iteration reports, CSV outputs, and visualizations.
+This project implements **numerical inverse kinematics (IK)** for a 6-DOF UR5 robot using the **Newton–Raphson method**. It builds upon the `IKinBody` function from the *Modern Robotics* library and extends it to produce iteration reports, CSV outputs, and visualizations.
 
 ---
 
