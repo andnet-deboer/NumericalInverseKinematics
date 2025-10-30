@@ -4,7 +4,10 @@ This project implements **numerical inverse kinematics (IK)** for a 6-DOF UR5 ro
 It builds upon the `IKinBody` function from the *Modern Robotics* library and extends it to produce iteration reports, CSV outputs, and visualizations.
 
 ---
-![Screencast from 2025-10-29 21-03-21 (1)](https://github.com/user-attachments/assets/a0b81e7c-a6c5-4e14-821e-d49d7f2de5e3)    ![Screencast from 2025-10-29 21-14-35](https://github.com/user-attachments/assets/6c707a71-1d9a-4ce5-b86a-6ebceff92042)
+
+Long Iteration             |  Short Iteration
+:-------------------------:|:-------------------------:
+![Screencast from 2025-10-29 21-03-21 (1)](https://github.com/user-attachments/assets/a0b81e7c-a6c5-4e14-821e-d49d7f2de5e3) |  ![Screencast from 2025-10-29 21-14-35](https://github.com/user-attachments/assets/6c707a71-1d9a-4ce5-b86a-6ebceff92042)
 
 <img width="1199" height="503" alt="image" src="https://github.com/user-attachments/assets/ef0aa115-fe60-4bfa-b952-63a1048eacc3" />
 
