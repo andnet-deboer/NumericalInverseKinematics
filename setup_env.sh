@@ -52,6 +52,7 @@ echo "isort" >> $REQS_TO_INSTALL
 echo "pytest" >> $REQS_TO_INSTALL
 echo "mypy" >> $REQS_TO_INSTALL
 echo "pre-commit" >> $REQS_TO_INSTALL
+echo "modern-robotics" >> $REQS_TO_INSTALL
 
 # Process extras
 for extra in $EXTRAS; do

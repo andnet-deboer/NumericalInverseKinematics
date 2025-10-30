@@ -15,6 +15,7 @@ kiwisolver==1.4.9
 MarkupSafe==3.0.3
 matplotlib==3.10.7
 mccabe==0.7.0
+modern-robotics==1.1.1
 mypy==1.18.2
 mypy_extensions==1.1.0
 narwhals==2.10.0
